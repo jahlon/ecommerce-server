@@ -1,0 +1,142 @@
+openapi: 3.0.2
+info:
+  title: ecommerce
+  version: '1.0'
+  description: This API provides the backend for the ecommerce shopping cart example application
+  contact:
+    name: Jesús Hincapié
+    email: jahlon@gmail.com
+servers:
+  - url: 'http://localhost:5000/'
+    description: Jesús Andres Hincapié
+paths:
+  /products:
+    get:
+      summary: Get User Info by User ID
+      tags:
+        - developers
+      responses:
+        '200':
+          description: Products Found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+              examples:
+                Get all products:
+                  value:
+                    - sku: SP001
+                      name: Candybar
+                      description: An imported candy bar
+                      unitPrice: 2
+                    - sku: EA001
+                      name: Laptop
+                      description: A Samsung Laptop with high performance capabilities
+                      unitPrice: 850
+      operationId: api.get_products
+      description: 'Retrieve information of the products filter by name. If no filter is given, it returns all the products'
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: name
+          description: value for filtering products
+  /cart:
+    post:
+      summary: Create New User
+      operationId: api.add_item_to_cart
+      responses:
+        '200':
+          description: Item added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartItem'
+              examples:
+                Item added to cart:
+                  value:
+                    id: 1
+                    product:
+                      sku: SP001
+                      name: Candybar
+                      description: An imported candy bar
+                      unitPrice: 2
+                    quantity: 10
+        '400':
+          description: Missing Required Information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              x-body-name: item
+              type: object
+              properties:
+                productSku:
+                  type: string
+                quantity:
+                  type: number
+              required:
+                - productSku
+                - quantity
+            examples:
+              Add Product to Cart:
+                value:
+                  productSku: SP001
+                  quantity: 5
+        description: Post the product and quantity information for creating and adding a new item to the cart
+      description: Add a new item to the shopping cart
+      tags:
+        - developers
+    parameters: []
+    delete:
+      summary: ''
+      operationId: api.delete_item
+      responses:
+        '200':
+          description: Item deleted
+      description: Delete an item from the shopping cart
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: id
+          description: id of the cart item
+      tags:
+        - developers
+components:
+  schemas:
+    Product:
+      title: Product
+      type: object
+      description: A product of the store that can be added to a shopping cart. The type of product is coded in the sku property
+      x-examples: {}
+      properties:
+        sku:
+          type: string
+          description: Unique identifier for the given user.
+        name:
+          type: string
+        description:
+          type: string
+        unitPrice:
+          type: number
+          format: email
+      required:
+        - sku
+        - name
+        - description
+        - unitPrice
+    CartItem:
+      title: CartItem
+      type: object
+      properties:
+        id:
+          type: integer
+        product:
+          $ref: '#/components/schemas/Product'
+        quantity:
+          type: number
+tags:
+  - name: developers
