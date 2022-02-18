@@ -35,7 +35,7 @@ paths:
                       name: Laptop
                       description: A Samsung Laptop with high performance capabilities
                       unitPrice: 850
-      operationId: api.get_products
+      operationId: api.ECommerceAPITinyDB.get_products
       description: 'Retrieve information of the products filter by name. If no filter is given, it returns all the products'
       parameters:
         - schema:
@@ -46,7 +46,7 @@ paths:
   /cart:
     post:
       summary: Create New User
-      operationId: api.add_item_to_cart
+      operationId: api.ECommerceAPITinyDB.add_item_to_cart
       responses:
         '200':
           description: Item added
@@ -92,7 +92,7 @@ paths:
     parameters: []
     delete:
       summary: ''
-      operationId: api.delete_item
+      operationId: api.ECommerceAPITinyDB.delete_item
       responses:
         '200':
           description: Item deleted
@@ -101,7 +101,7 @@ paths:
         - schema:
             type: string
           in: query
-          name: id
+          name: item_id
           description: id of the cart item
       tags:
         - developers
